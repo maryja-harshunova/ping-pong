@@ -75,21 +75,41 @@ y = randint(-5, 5)
 
 ball = Ball("ball.png", 330, 330, x, y, 50, 50)
 
+finish = False
+
+font.init()
+font = font.Font(None, 50)
+
 while run:
     for e in event.get():
         if e.type == QUIT:
             run = False
-    
-    window.fill(BACKCOLOR)
-    
-    platform_left.reset()
-    platform_right.reset()
 
-    platform_left.update_left()
-    platform_right.update_right()
+    if finish != True:
+        for e in event.get():
+            if e.type == QUIT:
+                run = False
+        
+        window.fill(BACKCOLOR)
+        
+        platform_left.reset()
+        platform_right.reset()
 
-    ball.reset()
-    ball.update_ball()
+        platform_left.update_left()
+        platform_right.update_right()
+
+        ball.reset()
+        ball.update_ball()
+
+        if ball.who_lose() == "right":
+            lose = font.render("RIGHT LOSE", True, (255, 0, 0))
+            window.blit(lose, (240, 20))
+            finish = True
+        
+        if ball.who_lose() == "left":
+            lose = font.render("LEFT LOSE", True, (255, 0, 0))
+            window.blit(lose, (240, 20))
+            finish = True
 
     display.update()
     timer.tick(60)
